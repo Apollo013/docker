@@ -1,0 +1,86 @@
+Overview
+--------------
+Image -> Receipe
+Container -> Runnable Instance. Can run multiple containers from a single image.
+Volumes -> persistant database storage mechanism. Exists outside the container.
+Network -> Allows multiple containers to talk to each other or external web.
+
+
+Docker workflow
+---------------
+Client
+Docker Hot (Daemon)
+Docker Registry (Docker Hub)
+
+
+Dockerfile:
+---------------
+FROM: specifies the base image to use
+WORKDIR: Sets the working directory (/path/to/workdir or /app)
+COPY: Copies files from build context to image
+RUN: Executes commands during image build
+EXPOSE: The ports to listen to at runtime (Don't forget port mapping from container to host -> docker run -p 5173:5173 react-docker -> update package.json also with --host)
+ENV: Sets environmental variables during build process (Available during build and runtime)
+ARG: Sets buildtime variables (Available only during build)
+VOLUME: Specifies mount point for externally mounted volumes. Specifies where in your container where you can connect external storage.
+CMD:  The full command to run when the container starts -> CMD["executable", "param1", "param2"] OR CMD["param1", "param2"]
+ENTRYPOINT: Default executable to run (npm run dev)
+
+CMD -> ENTRYPOINT -> CMD mode Flexible and can be overwritten, ENTRYPOINT cannot be overwritten.
+If both used, CMD will be passed to ENTRYPOINT.
+
+
+Example (Node)
+---------------
+FROM node: 20-alpine
+WORKDIR /app
+COPY . . (copy everything from first dot(local) to second dot (container))
+CMD node hello.js
+
+
+cd hello-world
+docker build -t hello-world .
+docker run -it hello-world
+
+to sh
+--------
+docker run -it hello-world sh
+
+
+Commands
+---------------
+PULL: docker pull ubuntu -> pulls image from dockerhub
+RUN: 
+	docker run -it ubuntu -> new container should be running
+	docker run -p 5173:5173 react-docker -> mapping from container to host -> update package.json also with --host)
+	
+BUILD: docker build -t react-docker
+
+STOP: 
+	docker stop distracted_wozniak (container name)
+	docker stop 7dj (first 3 chars of container id or use full container id)
+		
+LIST: 
+	ps: docker ps -> list running containers
+    ps: docker ps -a -> list all containers (running or not)
+	
+Remove:
+	prune: docker container prune -> remove all stopped containers	
+	rm: docker rm aa7 -> remove container by name or id (first 3)
+		docker rm aa7 --force -> remove container by name or id (first 3) force it to stop first
+	
+
+
+.dockerignore -> similar to .gitignore
+
+
+Compose
+-----------------
+docker init
+docker compose up --build
+docker compose watch
+
+
+
+
+
